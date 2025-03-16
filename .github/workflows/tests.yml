@@ -7,26 +7,26 @@ on:
     branches: [main]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: This is a build job
-      run: echo "Hello, world! Build"
-
   test:
-    needs: build
     runs-on: ubuntu-latest
 
     steps:
-    - name: This is a test job
-      run: echo "Hello, world! Test"
-
-  deploy:
-    needs: test
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: This is a deploy job
-      run: echo "Hello, world! Deploy"
-
+    - name: Checkout the code
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12' 
+    
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+    
+    - name: Run tests
+      run: pytest --html=reports/index.html
+    
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: reports

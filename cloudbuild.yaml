@@ -10,7 +10,12 @@ steps:
         pip install playwright
         python -m playwright install --with-deps chromium
         pytest --html=reports/index.html
-
+        
+artifacts:
+  objects:
+    location: gs://bootcamp-axone/pw-pyton-reports/
+    paths:
+      - 'reports/**'
 options:
   machineType: 'E2_HIGHCPU_8'  # Adjust based on test load
   logging: CLOUD_LOGGING_ONLY

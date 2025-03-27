@@ -1,28 +1,15 @@
 steps:
-  # Step 1: Set up Python environment
+  # Step 1: Install dependencies and run tests in one step
   - name: 'python:3.12'
-    id: 'Install dependencies'
-    entrypoint: 'pip'
-    args: ['install', '-r', 'requirements.txt']
-
-  - name: 'python:3.12'
-    id: 'Install Playwright'
-    entrypoint: 'pip'
-    args: ['install', 'playwright']
-
-  # Step 2: Install Playwright browsers
-  - name: 'python:3.12'
-    id: 'Install Playwright Browsers'
+    id: 'Install and Run Tests'
     entrypoint: 'sh'
     args:
       - '-c'
-      - 'playwright install --with-deps chromium'
-
-  # Step 3: Run Playwright tests
-  - name: 'python:3.12'
-    id: 'Run Tests'
-    entrypoint: 'pytest'
-    args: ['--html=reports/index.html']  # Modify based on your test directory
+      - |
+        pip install -r requirements.txt
+        pip install playwright
+        python -m playwright install --with-deps chromium
+        pytest --html=reports/index.html
 
 options:
   machineType: 'E2_HIGHCPU_8'  # Adjust based on test load
